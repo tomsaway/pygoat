@@ -1,4 +1,4 @@
-name: Contrast SCA Scan
+name: Contrast SCA Scan Workflow
 
 on:
   workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
+          python-version: '3.8'
 
       - name: Cache pip dependencies
         uses: actions/cache@v4
@@ -40,6 +40,9 @@ jobs:
         uses: Contrast-Security-OSS/contrast-sca-action@v3
         with:
           apiKey: ${{ secrets.CONTRAST__API_KEY }}
+          authHeader: ${{ secrets.CONTRAST_GITHUB_APP_AUTH_HEADER }}
           orgId: ${{ secrets.CONTRAST__ORG_ID }}
           apiUrl: ${{ secrets.CONTRAST__API_URL }}
-          # Add any additional options as needed
+          filePath: ${{ matrix.manifest.filePath }}
+          repositoryId: ${{ matrix.manifest.repositoryId }}
+          projectGroupId: ${{ matrix.manifest.projectGroupId }}
