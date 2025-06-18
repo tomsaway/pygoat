@@ -3,16 +3,19 @@ name: Contrast SCA Scan
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches:
+      - master
   pull_request:
-    branches: [ master ]
+    types: [opened, synchronize, reopened]
+    branches:
+      - master
 
 jobs:
   contrast-sca:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout code
+      - name: Clone repository
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -34,7 +37,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Contrast SCA Action
-        uses: Contrast-Security-OSS/contrast-sca-action@v2
+        uses: Contrast-Security-OSS/contrast-sca-action@v3
         with:
           apiKey: ${{ secrets.CONTRAST__API_KEY }}
           orgId: ${{ secrets.CONTRAST__ORG_ID }}
